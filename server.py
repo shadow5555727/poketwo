@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 import stripe
-from discord.ext.ipc import Client
+from discord.ext.ipc import Client, ServerConnectionRefusedError
 from motor.motor_asyncio import AsyncIOMotorClient
 from quart import Quart, abort, request
 
@@ -65,7 +65,7 @@ async def all_stats():
     for idx in range(100):
         try:
             resp[idx] = await req(idx, "stats")
-        except OSError:
+        except ServerConnectionRefusedError:
             break
     return resp
 
@@ -77,7 +77,7 @@ async def all_reload():
     for idx in range(100):
         try:
             resp[idx] = await req(idx, "reload")
-        except OSError:
+        except ServerConnectionRefusedError:
             break
     return resp
 
@@ -90,7 +90,7 @@ async def all_disable():
     for idx in range(100):
         try:
             resp[idx] = await req(idx, "disable", message=message)
-        except OSError:
+        except ServerConnectionRefusedError:
             break
     return resp
 
@@ -102,7 +102,7 @@ async def all_enable():
     for idx in range(100):
         try:
             resp[idx] = await req(idx, "enable")
-        except OSError:
+        except ServerConnectionRefusedError:
             break
     return resp
 
@@ -116,7 +116,7 @@ async def all_eval():
     for idx in range(100):
         try:
             resp[idx] = await req(idx, "eval", code=code)
-        except OSError:
+        except ServerConnectionRefusedError:
             break
     return resp
 
@@ -125,7 +125,7 @@ async def all_eval():
 async def cluster_stats(idx):
     try:
         return await req(idx, "stats")
-    except OSError:
+    except ServerConnectionRefusedError:
         abort(404)
 
 
@@ -134,7 +134,7 @@ async def cluster_stats(idx):
 async def cluster_reload(idx):
     try:
         return await req(idx, "reload")
-    except OSError:
+    except ServerConnectionRefusedError:
         abort(404)
 
 
@@ -143,7 +143,7 @@ async def cluster_reload(idx):
 async def cluster_stop(idx):
     try:
         return await req(idx, "stop")
-    except OSError:
+    except ServerConnectionRefusedError:
         abort(404)
 
 
@@ -153,7 +153,7 @@ async def cluster_disable(idx):
     message = request.args.get("message", None)
     try:
         return await req(idx, "disable", message=message)
-    except OSError:
+    except ServerConnectionRefusedError:
         abort(404)
 
 
@@ -162,7 +162,7 @@ async def cluster_disable(idx):
 async def cluster_enable(idx):
     try:
         return await req(idx, "enable")
-    except OSError:
+    except ServerConnectionRefusedError:
         abort(404)
 
 
@@ -172,7 +172,7 @@ async def cluster_eval(idx):
     code = request.args.get("code")
     try:
         return await req(idx, "eval", code=code)
-    except OSError:
+    except ServerConnectionRefusedError:
         abort(404)
 
 
@@ -182,7 +182,7 @@ async def send_dm(user):
     message = request.args.get("message")
     try:
         return await req(0, "send_dm", user=user, message=message)
-    except OSError:
+    except ServerConnectionRefusedError:
         return "Not Found", 404
 
 
@@ -239,7 +239,7 @@ async def dbl():
             user=uid,
             message=f"Thanks for voting! You received {article} **{box_type} box** and **{tickets} Halloween Candies**.",
         )
-    except OSError:
+    except ServerConnectionRefusedError:
         pass
 
     return "Success", 200
@@ -275,7 +275,7 @@ async def purchase():
             user=uid,
             message=f"Thanks for donating! You received **{shards}** shards.",
         )
-    except OSError:
+    except ServerConnectionRefusedError:
         pass
 
     return "Success", 200

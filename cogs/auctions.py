@@ -126,7 +126,7 @@ class Auctions(commands.Cog):
 
     @commands.group(aliases=["auctions", "a"], invoke_without_command=True)
     async def auction(self, ctx: commands.Context, **flags):
-        """Auction pokémon."""
+        """Auction pokémon. *Only available in Official Server at the moment.*"""
 
         await ctx.send_help(ctx.command)
 
@@ -134,6 +134,9 @@ class Auctions(commands.Cog):
     @auction.command()
     async def channel(self, ctx: commands.Context, channel: discord.TextChannel):
         """Change the auctions channel."""
+
+        if ctx.guild.id not in (716390832034414685, 734162361891422249):
+            return await ctx.send("Auctions are only available in the official server for now.")
 
         await self.db.update_guild(ctx.guild, {"$set": {"auction_channel": channel.id}})
         await ctx.send(f"Setup auctions in {channel}.")

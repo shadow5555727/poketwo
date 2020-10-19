@@ -682,6 +682,7 @@ class Shop(commands.Cog):
             )
 
         elif item.action == "incense":
+            return await ctx.send("Incense is disabled temporarily and will be back up soon.")
 
             permissions = ctx.channel.permissions_for(ctx.author)
 
@@ -950,6 +951,9 @@ class Shop(commands.Cog):
 
         if ctx.channel.id == 759559123657293835:
             return await ctx.send("You can't redeemspawn a pokémon here!")
+
+        if species.id == 50001:
+            return await ctx.send("You can't redeem that pokémon!")
 
         await self.db.update_member(
             ctx.author,

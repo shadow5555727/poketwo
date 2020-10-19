@@ -150,7 +150,7 @@ class Spawning(commands.Cog):
 
                     await self.db.update_pokemon(pokemon, update)
 
-                    if not silence:
+                    if False:# not silence:
                         permissions = message.channel.permissions_for(message.guild.me)
                         if (
                             permissions.send_messages
@@ -159,7 +159,7 @@ class Spawning(commands.Cog):
                         ):
                             await message.channel.send(embed=embed)
 
-                    if silence and pokemon.level == 100:
+                    if pokemon.level == 100:
                         await message.author.send(embed=embed)
 
                 elif pokemon.level == 100 and pokemon.xp < pokemon.max_xp:
@@ -172,7 +172,7 @@ class Spawning(commands.Cog):
         if not message.guild:
             return
 
-        if current - self.bot.cooldown_guilds.get(message.guild.id, 0) < 1.5:
+        if current - self.bot.cooldown_guilds.get(message.guild.id, 0) < 3:
             return
 
         self.bot.cooldown_guilds[message.guild.id] = current
@@ -180,7 +180,7 @@ class Spawning(commands.Cog):
             self.bot.guild_counter.get(message.guild.id, 0) + 1
         )
 
-        if self.bot.guild_counter[message.guild.id] >= 15:
+        if self.bot.guild_counter[message.guild.id] >= 70:
             self.bot.guild_counter[message.guild.id] = 0
 
             guild = await self.db.fetch_guild(message.guild)
@@ -216,6 +216,7 @@ class Spawning(commands.Cog):
     async def spawn_pokemon(self, channel, species=None, incense=None):
         if species is None:
             species = self.bot.data.random_spawn()
+            return
 
         permissions = channel.permissions_for(channel.guild.me)
         if not (
