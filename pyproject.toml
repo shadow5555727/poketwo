@@ -6,7 +6,7 @@ authors = ["Oliver Ni <oliver.ni@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-framework-py = { path = "../framework-py/", develop = true }
+framework-py = { path = "./framework-py/", develop = true }
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"

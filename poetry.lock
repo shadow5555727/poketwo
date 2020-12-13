@@ -122,7 +122,7 @@ python-dateutil = "^2.8.1"
 
 [package.source]
 type = "directory"
-url = "../framework-py"
+url = "framework-py"
 
 [[package]]
 name = "hiredis"
@@ -241,7 +241,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "bb981441af1d895663a55f588efbc640a6474861366ec07efae209ac08d4791c"
+content-hash = "ff50916d960792e485b365f1fc2dc234c18e0e206d06041544e4b9be1de885cc"
 
 [metadata.files]
 aio-pika = [
